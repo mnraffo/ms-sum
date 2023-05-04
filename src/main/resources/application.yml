@@ -1,0 +1,52 @@
+server:
+  port: 9091
+  servlet:
+    context-path: /ms-sum
+
+spring:
+  application:
+    name: ms-sum
+  mvc:
+    throw-exception-if-no-handler-found: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+  redis:
+    host: ${SPRING_REDIS_HOST:localhost}
+    port: ${SPRING_REDIS_PORT:6379}
+
+springdoc:
+  api-docs:
+    path: /api-docs
+
+resilience4j:
+  retry:
+    instances:
+      feeServiceRetry:
+        maxRetryAttempts: 3
+        waitDuration: 1s
+
+  ratelimiter:
+    instances:
+      sumRateLimit:
+        limitForPeriod: 3
+        limitRefreshPeriod: 60s
+        timeoutDuration: 1s
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+
+apis:
+  fee:
+    base-url: ${TENPO_MS_FEE_BASE_URL:http://localhost:9090/ms-fee}
+    connection-timeout: 5000
+    response-timeout: 5000
+    fee-uri: /fee
+    cache:
+      fee-key: tenpo.fee.fee
+      fee-ttl: 30
