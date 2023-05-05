@@ -18,6 +18,6 @@ public class SumService {
         double sum = Double.sum(first, second);
         sum = sum * percentage;
 
-        return new Sum(Math.round(sum));
+        return new Sum(sum);
     }
 }
